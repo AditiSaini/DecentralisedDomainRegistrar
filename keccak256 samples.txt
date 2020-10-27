@@ -1,0 +1,21 @@
+--------
+We use 
+keccak256(abi.encodePacked(valueBid, bidFake, secret))
+for our hashing purposes.
+
+Use 
+https://emn178.github.io/online-tools/keccak_256.html 
+for "secret" below
+--------
+
+1. BlindBid = "0xd7146442058b5aadbcc239a52d5989a8369cdfdd83bb31bf88e29893823a7a52"
+
+valueBid = 1, BidFake = false, secret = keccak256 hash of valueBid (prefix 0x)
+
+2. BlindBid = "0xdbe5651433fe2b680ab7cef429b589b61b4999baa1b5832470614b26657b0add"
+
+valueBid = 2, BidFake = false, secret = keccak256 hash of valueBid (prefix 0x)
+
+3. BlindBid = "0xbe5cf62c4764fd2cfb9867d4cf56f14b6e14a9c0cf6cfb102ea36f9ba47725c9"
+
+valueBid = 3 BidFake = false, secret = keccak256 hash of valueBid (prefix 0x)
