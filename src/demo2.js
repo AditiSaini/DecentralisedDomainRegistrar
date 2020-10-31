@@ -15,7 +15,7 @@ class Demo2 extends Component {
   render() {
     return <div>
       <h4><b>Owned By: </b></h4>
-      xxxxxxxxxxxx {/*call mapping function "queryaddress*/}
+      {this.props.topBidder}
       <button className= ".sendetherbutton">Send ETH to address </button>
     </div>;
   }

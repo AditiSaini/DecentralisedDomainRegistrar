@@ -28,18 +28,6 @@ class Demo4 extends Component {
         </div>
     );
   }
-
-  /*render() {
-    return <div> 
-      <input 
-      type = "text" pattern = "[0-9]*"
-      placeholder = "enter price"
-      value={this.state.value}
-      /> 
-      <button> Make price offer </button>
-      {""}
-      </div>
-  }*/
 }
 
 export default Demo4;

@@ -25,7 +25,7 @@ class Demo6 extends Component {
         </label>
         <button onClick = {this.handleSubmit}>Submit</button>
       </form>
-      <h4><b>Bid Status: </b></h4> Bid Lost {""}
+      <h4><b>Bid Status: {this.props.bidStatus}</b></h4> 
 
 
       {/* bid status can be : Bid Won, Bid Still Underprocess*/}

@@ -5,8 +5,8 @@ import { useState, useRef, useEffect } from "react";
 
 // *** Declare local addressses ***
 
-const myAddress = "0x184654B0dfe1Cc0290c32Cb564f670F9FF9fe4Bb"; //Change
-export const ntuDNRContractAddress = "0x7fbfdfa9B60C691F820F972B4904Ae1A054Bb852"; //Change
+const myAddress = "0x248e0726834c1226B61000C5bd9f635ADde89d0b"; //Change
+export const ntuDNRContractAddress = "0xfBd5eB1E8A7Cd1B0145d951405eC9927330e728a"; //Change
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545'));
 const contract = new web3.eth.Contract(artifact.abi, ntuDNRContractAddress);
 
@@ -53,6 +53,23 @@ export const makeBid = async (amount) => {
    }
 
 };
+
+//Function 3
+export const viewTopBidder = async () => {
+    console.log("___Top bidder results___"); 
+    const topBidder = await contract.methods.viewTopBidder().call(); 
+    console.log(topBidder)
+    return topBidder;
+}
+
+//Function 4
+export const updateBidStatus = async () => {
+    console.log("___Update bid status___"); 
+    const bidStatus = await contract.methods.viewBidStatus().call(); 
+    console.log(bidStatus)
+    return bidStatus; 
+}
+
 
 /*
 import detectEthereumProvider from "@metamask/detect-provider";

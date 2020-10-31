@@ -40,7 +40,6 @@ class Demo3 extends Component {
             case "showHideViewOutcome":
                 this.setState({ showHideViewOutcome: !this.state.showHideViewOutcome });
                 break;
-
         }
     }
 
@@ -57,7 +56,7 @@ class Demo3 extends Component {
                 <div>
                     {showHideInputPrice && <Demo4 />}
                     <hr />
-                    {showHideViewOutcome && <Demo6 />}
+                    {showHideViewOutcome && <Demo6 bidStatus={this.props.bidStatus}/>}
                     <hr />
                 </div>
             </div>

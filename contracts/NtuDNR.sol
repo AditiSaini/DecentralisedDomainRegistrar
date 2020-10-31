@@ -175,6 +175,10 @@ contract NtuDNR{
         return topBid;
     }
 
+    function viewBidStatus() public view returns (bool success){
+        return topBidder == msg.sender;
+    }
+    
     function checkHashValue(uint valueBid, bool bidFake, bytes32 secret) public pure returns (bytes32){
         return keccak256(abi.encodePacked(valueBid, bidFake, secret));
     }

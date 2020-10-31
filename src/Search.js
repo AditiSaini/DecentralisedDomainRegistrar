@@ -10,6 +10,8 @@ import { render } from '@testing-library/react';
 import {
     updateDomainTaken,
     makeBid,
+    viewTopBidder, 
+    updateBidStatus
 } from "./NtuDNR";
 
 // Section that searches are made.
@@ -34,6 +36,8 @@ class Search extends Component {
             matchedNames: [],
             showHideDomainRelated: true,
             addressToDomain: "",
+            topBidder: "xxxxxxxxx", 
+            bidStatus: ""
         }
 
         this.editSearchTerm = this.editSearchTerm.bind(this);
@@ -63,20 +67,40 @@ class Search extends Component {
                 this.setState({ showHideDetails: !this.state.showHideDetails });
                 break;
             case "showHideBid":
+                console.log("Bidding...")
                 this.setState({ showHideBid: !this.state.showHideBid });
                 break;
-
         }
     }
 
     updateDomainTaken = async() =>{
         let targetDomain = this.state.searchTerm;
         let result = await updateDomainTaken(targetDomain);
-        //console.log(result);
         if (result == true) {this.setState({domainTaken: "This domain is available"})}
         else{this.setState({domainTaken: "This domain has been taken"})}
-        await makeBid("1");
+
+        // await makeBid("1");
     } // to be implemented with the back end
+
+    viewTopBidder = async() => {
+        let topBidder = await viewTopBidder(); 
+        if (topBidder!= "0x0000000000000000000000000000000000000000"){
+            this.setState({topBidder});
+        }
+        console.log("Top bidder function outputs: " + topBidder);
+    }
+
+    viewBidStatus = async() => {
+        let bidStatus = await updateBidStatus(); 
+        let result;
+        if (bidStatus==true) {
+            result = "Won"
+        } else {
+            result = "Lost"
+        }
+        this.setState({bidStatus: result}); 
+        console.log("Bid status: " + result);
+    }
 
     handleClick = async() =>{
         this.setState({matchedNames: await this.dynamicSearch()});
@@ -103,7 +127,11 @@ class Search extends Component {
                 <Demo
                     hideComponent={this.hideComponent}
                     updateDomainTaken={this.updateDomainTaken}
+                    viewTopBidder={this.viewTopBidder}
+                    topBidder={this.state.topBidder}
                     domainTaken={this.state.domainTaken}
+                    viewBidStatus={this.viewBidStatus}
+                    bidStatus={this.state.bidStatus}
                     targetDomain={this.state.searchTerm}
                     showHideAvailability={this.state.showHideAvailability}
                     showHideDetails={this.state.showHideDetails}
@@ -145,17 +173,17 @@ class Demo extends Component {
                 <button onClick={() => {this.props.updateDomainTaken();this.props.hideComponent("showHideAvailability")}}>
                     Availability
                 </button>
-                <button onClick={() => this.props.hideComponent("showHideDetails")}>
+                <button onClick={() => {this.props.viewTopBidder(); this.props.hideComponent("showHideDetails")}}>
                     Details
                 </button>
-                <button onClick = {()=> this.props.hideComponent("showHideBid")}>
+                <button onClick = {()=> {this.props.viewBidStatus(); this.props.hideComponent("showHideBid")}}>
                     Bid
                 </button>
                 {this.props.showHideAvailability && <Demo1 domainTaken={this.props.domainTaken}/>}
                 <hr />
-                {this.props.showHideDetails && <Demo2 />}
+                {this.props.showHideDetails && <Demo2 topBidder={this.props.topBidder}/>}
                 <hr />
-                {this.props.showHideBid && <Demo3 />}
+                {this.props.showHideBid && <Demo3 bidStatus={this.props.bidStatus}/>}
                 <hr />
             </div>
         );
