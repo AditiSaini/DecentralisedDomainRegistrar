@@ -5,8 +5,13 @@ class Demo6 extends Component {
   constructor() {
     super();
     this.state = {
-      name: "React"
+      name: "React", 
+      submit: false
     };
+  }
+
+  handleSubmit = () => {
+    window.alert("Reveal successful!"); 
   }
 
   render() {
@@ -20,7 +25,7 @@ class Demo6 extends Component {
           <h4>Secret</h4>
           <input type="text" placeholder ="Enter your secret (in hex)" value={this.state.value} onChange={this.props.handleClaimedSecret} />
         </label>
-        <button onClick = {() => {this.props.viewBidOutcome()}}> Submit</button>
+        <button onClick = {() => {this.handleSubmit(); this.props.viewBidOutcome()}}> Submit</button>
         <button onClick = {() => {this.props.viewBidStatus()}}> View Bid Status</button>
       <h4><b>Bid Status:</b></h4>
       {this.props.showHideBidStatus && <h4><b>{this.props.bidStatus} </b></h4>}
