@@ -24,6 +24,8 @@ class Demo3 extends Component {
                         secretOffered={ this.props.secretOffered}
                         handleOfferedPrice = {this.props.handleOfferedPrice}
                         handleOfferedSecret = {this.props.handleOfferedSecret}
+                        handleFakePrice = {this.props.handleFakePrice}
+                        fakePriceOffered = {this.props.fakePriceOffered}
                     />}
                     <hr />
                     {showHideViewOutcome && <Demo6

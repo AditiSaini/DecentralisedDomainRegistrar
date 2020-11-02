@@ -38,6 +38,7 @@ class Search extends Component {
             showHideBidStatus: false,
             addressToDomain: "",
             priceOffered:"",
+            fakePriceOffered: "",
             secretOffered:"",
             claimedPrice:"",
             claimedSecret:"",
@@ -65,7 +66,7 @@ class Search extends Component {
     makeOffer = async() =>{ // """Need hash value function over here"""
         const hashBid = await hashInputSecret(this.state.priceOffered, this.state.secretOffered);
         console.log(hashBid);
-        await makeBid("5",this.state.searchTerm, hashBid);
+        await makeBid(this.state.fakePriceOffered,this.state.searchTerm, hashBid);
     }
 
     viewBidOutcome = async() =>{
@@ -166,6 +167,11 @@ class Search extends Component {
         this.setState({claimedSecret: e.target.value});
     }
 
+    handleFakePrice = (e) => {
+        console.log("::::::Handling fake price: " + e.target.value+ "::::::"); 
+        this.setState({fakePriceOffered: e.target.value});
+    }
+
     handleOfferedPrice = (e) =>
     {
         this.setState({priceOffered: e.target.value});
@@ -202,6 +208,8 @@ class Search extends Component {
                     handleClaimedPrice = {this.handleClaimedPrice}
                     handleClaimedSecret = {this.handleClaimedSecret}
                     handleOfferedPrice = {this.handleOfferedPrice}
+                    handleFakePrice = {this.handleFakePrice}
+                    fakePriceOffered = {this.state.fakePriceOffered}
                     handleOfferedSecret = {this.handleOfferedSecret}
                     viewBidOutcome = {this.viewBidOutcome}
                     bidStatus = {this.state.bidStatus}
@@ -279,6 +287,8 @@ class Demo extends Component {
                     showHideViewOutcome={this.props.showHideViewOutcome}
                     hideComponent = {this.props.hideComponent}
                     priceOffered = {this.props.priceOffered}
+                    handleFakePrice = {this.props.handleFakePrice}
+                    fakePriceOffered = {this.props.fakePriceOffered}
                     secretOffered = {this.props.secretOffered}
                     viewBidStatus={this.props.viewBidStatus}
                     showHideBidStatus = {this.props.showHideBidStatus}

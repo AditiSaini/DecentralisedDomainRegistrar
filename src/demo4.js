@@ -7,6 +7,10 @@ class Demo4 extends Component {
         <div>
           <h4>This form is to make an offer, enter the price you will offer and your secret value </h4>
             <label>
+            <label>
+              <h4>Deposit amount</h4>
+              <input type="text" placeholder ="Enter Price in ETH" value={this.props.fakePriceOffered} onChange={this.props.handleFakePrice} />
+            </label>
               <h4>Bid Value</h4>
               <input type="text" placeholder ="Enter Price in ETH" value={this.props.priceOffered} onChange={this.props.handleOfferedPrice} />
             </label>

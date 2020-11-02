@@ -4,7 +4,7 @@ import artifact from "./NtuDNR.json";
 
 // *** Declare local addressses ***
 
-export const ntuDNRContractAddress = "0x6f02645cB4B603d5CaA98D81A20FE6C864bEf814"; //Change :local from migrate
+export const ntuDNRContractAddress = "0x084A2C96E6Cd9d8bf4fE7b9B69FF60C2d7758620"; //Change :local from migrate
 const web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')); //change: local change to HTTP
 const contract = new web3.eth.Contract(artifact.abi, ntuDNRContractAddress);
 
