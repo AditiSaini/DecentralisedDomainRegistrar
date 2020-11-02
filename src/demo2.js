@@ -16,7 +16,9 @@ class Demo2 extends Component {
     return <div>
       <h4><b>Owned By: </b></h4>
       {this.props.topBidder}
-      <button className= ".sendetherbutton">Send ETH to address </button>
+      <input type="text" value = {this.props.amountForTopBidder} onChange = {this.props.editAmountForTopBidder} placeholder ="Enter Ethers you want to send"/>
+      <br></br>
+      <button onClick = {this.props.sendEtherToAddress} >Send ETH to this Address</button>
     </div>;
   }
 }

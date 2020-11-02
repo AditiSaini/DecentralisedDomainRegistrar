@@ -9,7 +9,7 @@ contract NtuDNR{
     address payable public owner;
 
     // *** Bidding section ***
-    uint _timeBidding = 2 minutes; //change bidding duration here
+    uint _timeBidding = 20 minutes; //change bidding duration here
     uint _revealTime = 10 minutes; //change reveal period here
 
     struct Bid {
@@ -24,7 +24,7 @@ contract NtuDNR{
 
     mapping(address => mapping (string => Bid)) public bid;
 
-    address public topBidder;
+    address payable public topBidder;
     uint public topBid;
 
     //Allowed withdrawals of previous bids
@@ -86,8 +86,9 @@ contract NtuDNR{
     //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     //**** IMPLEMENT THIS WHEN DONE WITH TESTING PHASE ****
     //afterOnly(endBidding) beforeOnly(endReveal)
-    function reveal(string memory targetDomain, uint _values, bool _fake, bytes32 _secret) public returns(uint256){
+    function reveal(string memory targetDomain, uint _values, bool _fake, bytes32 _secret) public{
         uint256 refund;
+        uint256 valueBidInWei;
         Bid storage thisBid = bid[msg.sender][targetDomain];
         (uint valueBid, bool bidFake, bytes32 secret) = (
         _values,
@@ -99,27 +100,27 @@ contract NtuDNR{
         if (orig != check) {
             //Bid was not properly revealed
             //Deposit is not refunded
-            return refund;
+            return;
         }
         refund += thisBid.deposit;
+        valueBidInWei = valueInWei(valueBid);
         //Reduce the refund amount for the top bidder by value bidded
-        if (!bidFake && thisBid.deposit >= valueBid) {
-            if (bidPlace(msg.sender, valueBid, targetDomain)) {
-                refund -= valueBid;
+        if (!bidFake && thisBid.deposit >= valueBidInWei) {
+            if (bidPlace(msg.sender, valueBidInWei, targetDomain)) {
+                refund -= valueBidInWei;
             }
         }
 
         //Prevents sender from reclaiming the same deposit
         thisBid.blindBid = bytes32(0);
         msg.sender.transfer(refund);
-        return refund;
     }
 
     // This function is "internal", meaning that it
     // may only be called from inside the contract itself (or from
     // contracts deriving from it).
     // Checks the bid value and re-verifies the top bidder
-    function bidPlace(address bidder, uint valueBid, string memory targetDomain)
+    function bidPlace(address payable bidder, uint valueBid, string memory targetDomain)
     internal
     returns (bool success)
     {
@@ -129,7 +130,7 @@ contract NtuDNR{
 
         if (topBidder!= address(0)){
             //Refund the previous top bidder
-            returnsPending[topBidder] += topBid;
+            topBidder.transfer(topBid);
             delete domainNames[topBidder];
             delete addresses[targetDomain];
         }
@@ -163,6 +164,7 @@ contract NtuDNR{
         beneficiaryAddress.transfer(topBid);
     }
 
+
     function viewBidDeposit(string memory targetDomain, address targetAddress) public view returns (uint256 deposit){
         return bid[targetAddress][targetDomain].deposit;
     }
@@ -175,17 +177,26 @@ contract NtuDNR{
         return topBid;
     }
 
-    function viewBidStatus() public view returns (bool success){
-        return topBidder == msg.sender;
-    }
-    
     function checkHashValue(uint valueBid, bool bidFake, bytes32 secret) public pure returns (bytes32){
         return keccak256(abi.encodePacked(valueBid, bidFake, secret));
     }
 
     function checkOrigHashValue(address bidderAddress, string memory targetDomain) public view returns (bytes32){
-        Bid storage thisBid = bid[bidderAddress][targetDomain];
-        return thisBid.blindBid;
+        return bid[bidderAddress][targetDomain].blindBid;
     }
 
+    function valueInWei(uint256 value) public pure returns (uint256){
+        return value*(1 ether);
+    }
+
+    function viewBidStatus(address addressToCheck) public view returns (bool success){
+        return topBidder == addressToCheck;
+    }
+
+    function viewDomainOfAddress (address targetAddress) public view returns (string memory) {
+        return domainNames[targetAddress];
+    }
+
+    //fallback function
+    function() external payable { }
 }
